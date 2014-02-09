@@ -41,5 +41,12 @@
 - (void)notifyCalloutInfo:(MKPlacemark *)newPlacemark {
     [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:@"MKAnnotationCalloutInfoDidChangeNotification" object:self]];
 }
+-(CLLocationCoordinate2D)coord
+{
+    return _coordinate;
+}
 
+- (void)setCoordinate:(CLLocationCoordinate2D)newCoordinate {
+    _coordinate = newCoordinate;
+}
 @end

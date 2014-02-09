@@ -214,7 +214,14 @@
 
 }
 
-
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)annotationView didChangeDragState:(MKAnnotationViewDragState)newState fromOldState:(MKAnnotationViewDragState)oldState
+{
+    if (newState == MKAnnotationViewDragStateEnding)
+    {
+        CLLocationCoordinate2D droppedAt = annotationView.annotation.coordinate;
+        NSLog(@"Pin dropped at %f,%f", droppedAt.latitude, droppedAt.longitude);
+    }
+}
 - (void) closeButton:(id)button
 {
   [ self hideMap:NULL];
@@ -328,8 +335,9 @@
 	if (annView!=nil) return annView;
 
 	annView=[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
-
-	annView.animatesDrop=YES;
+    
+    annView.animatesDrop = YES;
+    annView.draggable = YES;
 	annView.canShowCallout = YES;
 	if ([phAnnotation.pinColor isEqualToString:@"120"])
 		annView.pinColor = MKPinAnnotationColorGreen;
@@ -338,19 +346,19 @@
 	else
 		annView.pinColor = MKPinAnnotationColorRed;
 
-	AsyncImageView* asyncImage = [[AsyncImageView alloc] initWithFrame:CGRectMake(0,0, 50, 32)];
-	asyncImage.tag = 999;
-	if (phAnnotation.imageURL)
-	{
-		NSURL *url = [[NSURL alloc] initWithString:phAnnotation.imageURL];
-		[asyncImage loadImageFromURL:url];
-	} 
-	else 
-	{
-		[asyncImage loadDefaultImage];
-	}
-
-	annView.leftCalloutAccessoryView = asyncImage;
+//	AsyncImageView* asyncImage = [[AsyncImageView alloc] initWithFrame:CGRectMake(0,0, 50, 32)];
+//	asyncImage.tag = 999;
+//	if (phAnnotation.imageURL)
+//	{
+//		NSURL *url = [[NSURL alloc] initWithString:phAnnotation.imageURL];
+//		[asyncImage loadImageFromURL:url];
+//	} 
+//	else 
+//	{
+//		[asyncImage loadDefaultImage];
+//	}
+//
+//	annView.leftCalloutAccessoryView = asyncImage;
 
 
 	if (self.buttonCallback && phAnnotation.index!=-1)
@@ -370,7 +378,7 @@
 	{
 		[self performSelector:@selector(openAnnotation:) withObject:phAnnotation afterDelay:1.0];
 	}
-
+    
 	return annView;
 }
 
