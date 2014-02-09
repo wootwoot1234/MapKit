@@ -54,6 +54,10 @@ MapKit.prototype = {
 		exec(success, error, 'MapKit', 'addMapPins', [pins]);
 	},
 
+	pinMoved: function(lat, lng) {
+		console.log("Pin Moved - Lat: " + lat + " Lng: " + lng);
+	},
+
 	clearMapPins: function(success, error) {
 		exec(success, error, 'MapKit', 'clearMapPins', []);
 	},
